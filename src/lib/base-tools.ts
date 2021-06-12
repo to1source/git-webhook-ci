@@ -6,11 +6,10 @@ import configOptionType from './config-option-type'
 import EventEmitter from 'events'
 
 export class BaseTools extends EventEmitter {
-  options: configOptionType
 
-  constructor(options: configOptionType) {
+  // class constructor
+  constructor(protected options: configOptionType) {
     super()
-    this.options = options
   }
 
   /**
@@ -18,8 +17,8 @@ export class BaseTools extends EventEmitter {
    * @param {object} req the request Object
    * @return {object} Promise
    */
-  parsePayload(req: any): Promise<any> {
-      return new Promise((resolver: any): void => {
+  protected parsePayload(req: any): Promise<any> {
+      return new Promise((resolver: any, rejecter: any): void => {
         let body: Array<any> = []
         req
           .on('data', (chunk: any) => {
@@ -29,21 +28,22 @@ export class BaseTools extends EventEmitter {
             const json: string = Buffer.concat(body).toString()
             resolver(JSON.parse(json))
           })
+          .on('error', rejecter) // just throw the rejecter in to handle it
       })
   }
 
    /**
-    * @param {object} res the respond object
-    * @param {string} msg to throw
+    * @param {object} res the respond object unable to get a correct type IncomingMessage?
+    * @param {string} err error string, this might or might not have, therefore make it optional
     * @return {void} nothing
     */
-  resError(res: any, msg: string): void  {
+  protected resError(res: any, err?: any): void  {
     res.writeHead(400, { 'content-type': 'application/json' })
     res.end(
       JSON.stringify({
-        error: msg
+        error: err
       })
     )
-    this.emit('error', new Error(msg))
+    this.emit('error', new Error(err))
   }
 }
