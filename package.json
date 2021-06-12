@@ -1,0 +1,48 @@
+{
+  "name": "git-webhook-ci",
+  "version": "2.0.0-alpha.1",
+  "description": "Using git provider webhook to create a poorman CI system ",
+  "main": "index.js",
+  "scripts": {
+    "test": "ava",
+    "lint": "eslint src/ --ext .js,.jsx,.ts,.tsx",
+    "build": "tsc -p tsconfig.json",
+    "clean": "node ./clean.js",
+    "ts-node": "ts-node",
+    "docs": "typedoc --entryPoints src/main.ts"
+  },
+  "keywords": [
+    "git",
+    "webhook",
+    "ci"
+  ],
+  "author": "Joel Chu <joelchu@foxmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "fs-extra": "^10.0.0",
+    "tslib": "^1.14.1",
+    "yargs": "^16.2.0"
+  },
+  "devDependencies": {
+    "@ava/typescript": "^1.1.1",
+    "@types/fs-extra": "^9.0.11",
+    "@types/node": "^15.3.0",
+    "@typescript-eslint/eslint-plugin": "^4.23.0",
+    "@typescript-eslint/parser": "^4.23.0",
+    "ava": "^3.15.0",
+    "esbuild": "^0.12.0",
+    "esbuild-register": "^2.5.0",
+    "eslint": "^7.26.0",
+    "ts-node": "^9.1.1",
+    "typedoc": "^0.20.36",
+    "typescript": "^4.2.4"
+  },
+  "ava": {
+    "extensions": [
+      "ts"
+    ],
+    "require": [
+      "esbuild-register"
+    ]
+  }
+}
