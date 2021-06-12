@@ -2,7 +2,7 @@
   "name": "git-webhook-ci",
   "version": "2.0.0-alpha.1",
   "description": "Using git provider webhook to create a poorman CI system ",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "ava",
     "lint": "eslint src/ --ext .js,.jsx,.ts,.tsx",
@@ -10,7 +10,7 @@
     "build": "tsc -p tsconfig.json",
     "clean": "node ./clean.js",
     "ts-node": "ts-node",
-    "docs": "typedoc --entryPoints src/main.ts"
+    "docs": "typedoc --entryPoints src/index.ts"
   },
   "keywords": [
     "git",
