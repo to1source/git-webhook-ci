@@ -25,7 +25,7 @@ private function checkSignature()
 }
 */
 import { BaseTools, configOptionType, debugFn } from '../../lib'
-import url from 'url'
+import { URL } from 'url'
 import sha1 from 'sha1'
 
 const debug = debugFn('git-webhook-ci:wechat')
@@ -43,26 +43,38 @@ export class WechatHandler extends BaseTools {
     if (this.options.inited !== true) {
       const echostr = this.verify(req)
       if (!echostr) {
-        debug('verify with wechat server failed');
-        return callback('verify failed');
+        debug('verify with wechat server failed')
+        return callback('verify failed')
       }
-      debug(`verify with wechat echostr '${echostr}' correct`);
-      res.writeHead(200, { 'content-type': 'text/html' });
-      res.end(echostr);
-      return;
+      debug(`verify with wechat echostr '${echostr}' correct`)
+      res.writeHead(200, { 'content-type': 'text/html' })
+      res.end(echostr)
+      return
     }
     // The implementation is different
-    this._parsePayload(req).then(payload => {
-      res.writeHead(200, { 'content-type': 'application/json' });
-      res.end('{"ok": true}');
-      // Just reuse the same naming
-      this.emit('push', {
-        payload,
-        host: req.headers.host,
-        event: 'wechat-push'
+    this.parsePayload(req)
+      .then(payload => {
+        res.writeHead(200, { 'content-type': 'application/json' })
+        res.end('{"ok": true}')
+        // Just reuse the same naming
+        this.emit('push', {
+          payload,
+          host: req.headers.host,
+          event: 'wechat-push'
+        })
       })
-    })
   }
+
+  // get the params from url
+  private getParams(url: string): any {
+    const u = new URL(url)
+    const params = ['signature', 'timestamp', 'nonce', 'echostr']
+
+    return params.map((param: string) => {
+      return {[param]: u.searchParams.get(param)}
+    }).reduce((a: any, b: any) => Object.assign(a, b), {})
+  }
+
   /**
    * This is different using the query parameter to compare
    * Another thing is - this is a one off verify process
@@ -71,8 +83,8 @@ export class WechatHandler extends BaseTools {
    * verify before the actual listening
    */
   private verify(req: any): string | boolean {
-    const { query } = url.parse(req.url, true)
-    const { signature, timestamp, nonce, echostr } = query
+    const { signature, timestamp, nonce, echostr } = this.getParams(req.url)
+
     const $token = this.options.secret
     let $tmpArr = [$token, timestamp, nonce]
     $tmpArr.sort()
