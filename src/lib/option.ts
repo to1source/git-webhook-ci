@@ -3,11 +3,11 @@
 
 import configOptionType from './config-option-type'
 
+// basically all the required options 
 export const defaultOptions: configOptionType = {
-  provider: 'gitee', // For future use
-  dir: '',
-  path: '/webhook',
   port: 8081,
+  provider: 'gitee',
+  path: '/webhook',
   branch: 'refs/heads/master',
   cmd: 'git pull origin master --no-edit'
 }
