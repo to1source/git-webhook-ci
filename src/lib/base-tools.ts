@@ -5,7 +5,7 @@
 import configOptionType from './config-option-type'
 import EventEmitter from 'events'
 
-export class BaseTools extends EventEmitter {
+class BaseTools extends EventEmitter {
 
   // class constructor
   constructor(protected options: configOptionType) {
@@ -47,3 +47,5 @@ export class BaseTools extends EventEmitter {
     this.emit('error', new Error(err))
   }
 }
+
+export { BaseTools, configOptionType }

@@ -1,5 +1,10 @@
 // src/lib/helpers.ts
 
+import debug from 'debug'
+
+// this way we don't need to import everywhere and get back the debug namespace
+export const debugFn = (name: string) => debug(name)
+
 // wrapper to get a timestamp
 export const getTimestamp = (): number => Date.now()
 

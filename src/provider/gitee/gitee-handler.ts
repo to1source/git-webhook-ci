@@ -1,7 +1,6 @@
 // src/provider/gitee/gitee-class.ts
 
-import { BaseTools } from '../../lib/base-tools'
-import configOptionType from '../../lib/config-option-type'
+import { BaseTools, configOptionType } from '../../lib/base-tools'
 
 export class GiteeHandler extends BaseTools {
 

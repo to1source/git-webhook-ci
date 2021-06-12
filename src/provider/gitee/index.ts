@@ -3,26 +3,34 @@
 // the actual execution
 
 import { GiteeHandler } from './gitee-handler'
-import debug from 'debug'
-import createServer from '../../lib/server'
-import configOptionType from '../../lib/config-option-type'
+import { createServer, configOptionType, debugFn } from '../../lib'
 
-const debugFn = debug('git-webhook-ci:gitee')
+const debug = debugFn('git-webhook-ci:gitee')
 
-function createGiteeServer(config: configOptionType, opt: any, callback: any) {
+/**
+ * The main method to handle the server create and run the whole service for gitee
+ * @param {configOptionType} config
+ * @param {object} opt
+ * @param {function} callback
+ * @param {function} errorHandler optional
+ * @return {http server instance}
+ */
+function createGiteeServer(config: configOptionType, opt: any, callback: any, errorHandler: any = () => {}): any {
 
   const gitee: GiteeHandler = new GiteeHandler(config)
   // just debug it out
-  gitee.on('error', err => {
-    debug('error', err)
+  gitee.on('error', (err: any) => {
+    debug('ERROR', err)
+    errorHandler(err)
   })
 
   gitee.on('push', (result: any) => {
-    const ref = result.payload.ref // ref is the branch name 
+    const ref = result.payload.ref // ref is the branch name
     if (config.branch === '*' || config.branch === ref) {
       callback(result, opt, ref)
     } else {
-      debugFn('Gitee webhook is not expecting this branch', ref)
+      errorHandler(ref)
+      debug('Gitee webhook is not expecting this branch', ref)
     }
   })
 
@@ -31,12 +39,14 @@ function createGiteeServer(config: configOptionType, opt: any, callback: any) {
     config,
     (req: any, res: any) => {
       gitee.handler(req, res, (err: any) => {
+        debug('The url got called! [%s]', req.url, err)
+        errorHandler(req.url, err)
+
         res.statusCode = 404
-        debugFn('The url got called! [%s]', req.url, err)
         res.end('-- no such location --')
       })
     },
-    debugFn
+    debug
   )
 }
 
