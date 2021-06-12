@@ -7,7 +7,8 @@ type configOptionType = {
   provider: string,
   path: string,
   branch: string,
-  cmd: string
+  cmd: string,
+  inited?: boolean
 }
 
 export default configOptionType
