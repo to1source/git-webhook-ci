@@ -2,12 +2,13 @@
 
 // typescript is really a fucking joke
 
+import configOptionType from './config-option-type'
 import EventEmitter from 'events'
 
 export class BaseTools extends EventEmitter {
-  options: any
+  options: configOptionType
 
-  constructor(options: any) {
+  constructor(options: configOptionType) {
     super()
     this.options = options
   }
@@ -36,5 +37,13 @@ export class BaseTools extends EventEmitter {
     * @param {string} msg to throw
     * @return {void} nothing
     */
-  
+  resError(res: any, msg: string): void  {
+    res.writeHead(400, { 'content-type': 'application/json' })
+    res.end(
+      JSON.stringify({
+        error: msg
+      })
+    )
+    this.emit('error', new Error(msg))
+  }
 }
