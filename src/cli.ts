@@ -67,7 +67,7 @@ const flags: any = {
 
 const cli = meow(helpText, {
   flags,
-  importMeta: import.meta // it was complainting about this ...
+  importMeta: import.meta // TS was complainting about this ...
 })
 
 // Wrap into a method to call

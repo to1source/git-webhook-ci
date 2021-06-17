@@ -2,5 +2,20 @@
 
 import test from 'ava'
 
+import { gitWebhookCi } from '../src/main'
 
-test.todo(`Should able to use a gitee config to connect`)
+import { SECRET_KEY } from './fixtures/secret'
+import { getFakeCallback } from './fixtures/fake-callback'
+
+
+test.cb(`Should able to use a gitee config to connect`, t => {
+  const fn = getFakeCallback('gitee')
+
+  gitWebhookCi({
+    secret: SECRET_KEY,
+    cmd: () => {
+      
+    }
+  })
+
+})
