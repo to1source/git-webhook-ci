@@ -1,2 +1,2 @@
 node_modules
-./tests/fixtures/py/*
+tests/fixtures/py/*
