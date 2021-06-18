@@ -36,7 +36,6 @@ function createGiteeServer(config: configOptionType, opt: any, callback: any, er
 
   // return the server instance
   return createServer(
-    config,
     (req: any, res: any) => {
       gitee.handler(req, res, (err: any) => {
         debug('The url got called! [%s]', req.url, err)
@@ -46,6 +45,7 @@ function createGiteeServer(config: configOptionType, opt: any, callback: any, er
         res.end('-- no such location --')
       })
     },
+    config,
     debug
   )
 }

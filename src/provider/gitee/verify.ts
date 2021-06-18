@@ -1,8 +1,8 @@
 // src/provider/gitee/secret.ts
 // see here: https://gitee.com/help/articles/4290#article-header3
-import { debugFn } from '../../lib/helpers'
 import { createHmac } from 'crypto'
 // use the debug to find out what went wrong
+import { debugFn } from '../../lib/helpers'
 const debug = debugFn('git-webhook-ci:gitee:verify')
 
 /**
@@ -10,7 +10,7 @@ const debug = debugFn('git-webhook-ci:gitee:verify')
  * @param {string} secretKey the secret key set during sestting up the webhook
  * @param {number} timestamp this timestamp send from the git provider server
  */
-function verifyKeyFn(secretKey: string, timestamp: number): string {
+export function verifyKeyFn(secretKey: string, timestamp: number): string {
   const secret_enc = Buffer.from(secret, 'utf8')
   const string_to_sign = `${timestamp}\n${secret_enc}`
   const hmac = createHmac('sha256', secret_enc)
