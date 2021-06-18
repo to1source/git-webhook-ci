@@ -16,7 +16,7 @@ export class GiteeHandler extends BaseTools {
    * @return {null} nothing
    */
   public handler(req: any, res: any, callback: any): any {
-    if (req.url.split('?').shift() !== this.options.path || req.method !== 'POST') {
+    if (req.method !== 'POST' || req.url.split('?').shift() !== this.options.path) {
       return callback() // This is the only time we use the callback
     }
     this.parsePayload(req)

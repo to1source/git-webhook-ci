@@ -2,7 +2,7 @@
 
 // the Gitee webhook headers and payload
 
-export const headers = {
+export const header = {
   'Content-Type': 'application/json',   // # 默认为 application/json , 若是旧版钩子(已不维护)为 application/x-www-form-urlencoded
   'User-Agent': 'git-oschina-hook', 　　// # 固定为 git-oschina-hook，可用于标识为来自 gitee 的请
   'X-Gitee-Token': 'webhook password/sign',　// # 用户新建 WebHook 时提供的密码或根据提供的签名密钥计算后的签名

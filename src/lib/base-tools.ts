@@ -13,6 +13,22 @@ class BaseTools extends EventEmitter {
   }
 
   /**
+   * parsing the raw heading and keep them in original format (no lower case)
+   * @param {*} req request object
+   * @return {object}
+   */
+  protected parseHeader(req): any {
+    const headers = req.rawHeaders
+    const ctn = headers.length
+    const h = {}
+    for (let i = 0; i < ctn; i += 2) {
+      h[ headers[i] ] = headers[ i + 1]
+    }
+
+    return h
+  }
+
+  /**
    * Extract the json payload
    * @param {object} req the request Object
    * @return {object} Promise
@@ -21,15 +37,24 @@ class BaseTools extends EventEmitter {
       return new Promise((resolver: any, rejecter: any): void => {
         // V.2 here we also need to parse the header and add to the json
         // and the result object will become { payload: Object, header: Object }
-
+        const header = this.parseHeader(req)
         let body: Array<any> = []
+
         req
           .on('data', (chunk: any) => {
             body.push(chunk)
           })
           .on('end', () => {
-            const json: string = Buffer.concat(body).toString()
-            resolver(JSON.parse(json))
+            // should catch error here as well
+            try {
+              const json: string = Buffer.concat(body).toString()
+              resolver({
+                header,
+                payload: JSON.parse(json)
+              })
+            } catch(e) {
+              rejecter(e)
+            }
           })
           .on('error', rejecter) // just throw the rejecter in to handle it
       })
