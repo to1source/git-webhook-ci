@@ -7,15 +7,20 @@ import { defaultOptions } from './lib/option'
 import { debugFn } from './lib'
 
 const debug = debugFn('git-webhook-ci:main')
-
+const blackhole = debugFn('git-webhook-ci:blackhole:main')
 
 /**
  * create a callback to execute
  * @param {string} cmd
  */
 function createCallback(cmd: Array<any>): any {
+  // the signature just matching the cmd callback and create a problem here
   return function callback(payload: any, opt: any) {
-    const ps = spawn(cmd[0], cmd.filter((c: any, i: number): boolean => i > 0), opt)
+    // don't really want to show this because it's pointless
+    blackhole(payload)
+
+    const ps = spawn(cmd[0], cmd.filter((_: any, i: number): boolean => i > 0), opt)
+
     ps.stdout.on('data', data => {
       debug("cmd stdout:", data)
     })

@@ -1,10 +1,8 @@
 // src/lib/option.ts
 // base config option
 
-import configOptionType from './config-option-type'
-
-// basically all the required options 
-export const defaultOptions: configOptionType = {
+// basically all the required options
+export const defaultOptions: any = {
   port: 8081,
   provider: 'gitee',
   path: '/webhook',

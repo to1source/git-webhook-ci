@@ -16,10 +16,10 @@ class BaseTools extends EventEmitter {
    * @param {*} req request object
    * @return {object}
    */
-  protected parseHeader(req): any {
-    const headers = req.rawHeaders
-    const ctn = headers.length
-    const h = {}
+  protected parseHeader(req: any): any {
+    const headers: Array<string> = req.rawHeaders
+    const ctn: number = headers.length
+    const h: any = {}
     for (let i = 0; i < ctn; i += 2) {
       h[ headers[i] ] = headers[ i + 1]
     }

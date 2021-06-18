@@ -4,7 +4,7 @@
 type configOptionType = {
   port: number,
   dir?: string,
-  secret?: string,
+  secret: string,
   provider: string,
   path: string,
   branch: string,
