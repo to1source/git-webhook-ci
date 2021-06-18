@@ -27,7 +27,6 @@ function createGitlabServer(config: configOptionType, opt: any, callback: any, e
 
   // return the http server
   return createServer(
-    config,
     (req: any, res: any): void => {
       gitlab.handler(req, res, (err: any) => {
 
@@ -38,6 +37,7 @@ function createGitlabServer(config: configOptionType, opt: any, callback: any, e
         res.end('-- no such location --')
       })
     },
+    config,
     debug
   )
 }

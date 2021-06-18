@@ -20,7 +20,6 @@ function createWechatServer(config: configOptionType, opt: any, callback: any, e
   })
 
   return createServer(
-    config,
     (req: any, res: any): void => {
       wechat.handler(req, res, (err:any): void => {
         errorHandler(err)
@@ -30,6 +29,7 @@ function createWechatServer(config: configOptionType, opt: any, callback: any, e
         res.end('-- no such location --')
       })
     },
+    config,
     debug
   )
 }

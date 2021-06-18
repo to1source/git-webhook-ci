@@ -31,7 +31,6 @@ function createGithubServer(config: configOptionType, opt: any, callback: any, e
   })
 
   return createServer(
-    config,
     (req: any, res: any): void => {
       handler(req, res, (err: any): void => {
 
@@ -42,6 +41,7 @@ function createGithubServer(config: configOptionType, opt: any, callback: any, e
         res.end('-- no such location --')
       })
     },
+    config,
     debug
   )
 }
