@@ -3,7 +3,7 @@
 import { spawn } from 'child_process'
 
 import { getProvider } from './provider'
-import defaultOptions from './lib/option'
+import { defaultOptions } from './lib/option'
 import { debugFn } from './lib'
 
 const debug = debugFn('git-webhook-ci:main')

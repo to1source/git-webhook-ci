@@ -1,9 +1,8 @@
 // src/lib/base-tools
 
-// typescript is really a fucking joke
-
-import { configOptionType, resolvedPayloadType } from './types'
 import EventEmitter from 'events'
+import { configOptionType, resolvedPayloadType } from './types'
+
 
 class BaseTools extends EventEmitter {
 

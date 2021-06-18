@@ -10,8 +10,8 @@ const debug = debugFn('git-webhook-ci:gitee:verify')
  * @param {string} secretKey the secret key set during sestting up the webhook
  * @param {number} timestamp this timestamp send from the git provider server
  */
-export function verifyKeyFn(secretKey: string, timestamp: number): string {
-  const secret_enc = Buffer.from(secret, 'utf8')
+export function getToken(secretKey: string, timestamp: number): string {
+  const secret_enc = Buffer.from(secretKey, 'utf8')
   const string_to_sign = `${timestamp}\n${secret_enc}`
   const hmac = createHmac('sha256', secret_enc)
   const data = hmac.update(string_to_sign)
@@ -31,7 +31,7 @@ export function verifyHandler(header: any, secretKey: string): boolean {
     const expected = ['X-Gitee-Token', 'X-Gitee-Timestamp', 'X-Gitee-Event'].filter(key => header[key] !== undefined).length
     if (expected === 3) {
       debug('Expected header passed')
-      if (header['X-Gitee-Token'] === verifyKeyFn(secretKey, parseInt(header['X-Gitee-Timestamp'])) {
+      if (header['X-Gitee-Token'] === getToken(secretKey, parseInt(header['X-Gitee-Timestamp']))) {
 
         return true
       } else {

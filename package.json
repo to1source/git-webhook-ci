@@ -6,6 +6,7 @@
   "scripts": {
     "test": "ava",
     "test:p": "ava --verbose ./tests/partial.test.ts",
+    "test:gitee": "DEBUG=git-webhook-ci:* ava --verbose ./tests/gitee.test.ts",
     "lint": "eslint src/ --ext .js,.jsx,.ts,.tsx",
     "init": "tsc --init",
     "build": "tsc -p tsconfig.json",
