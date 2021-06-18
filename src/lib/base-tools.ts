@@ -2,7 +2,7 @@
 
 // typescript is really a fucking joke
 
-import { configOptionType } from './types'
+import { configOptionType, resolvedPayloadType } from './types'
 import EventEmitter from 'events'
 
 class BaseTools extends EventEmitter {
@@ -17,7 +17,7 @@ class BaseTools extends EventEmitter {
    * @param {object} req the request Object
    * @return {object} Promise
    */
-  protected parsePayload(req: any): Promise<any> {
+  protected parsePayload(req: any): Promise<resolvedPayloadType> {
       return new Promise((resolver: any, rejecter: any): void => {
         // V.2 here we also need to parse the header and add to the json
         // and the result object will become { payload: Object, header: Object }

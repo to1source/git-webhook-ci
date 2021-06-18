@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "ava",
+    "test:p": "ava --verbose ./tests/partial.test.ts",
     "lint": "eslint src/ --ext .js,.jsx,.ts,.tsx",
     "init": "tsc --init",
     "build": "tsc -p tsconfig.json",

@@ -12,4 +12,9 @@ type configOptionType = {
   inited?: boolean
 }
 
-export { configOptionType }
+type resolvedPayloadType = {
+  header: any,
+  payload: any
+}
+
+export { configOptionType, resolvedPayloadType }

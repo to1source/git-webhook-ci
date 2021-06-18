@@ -3,7 +3,7 @@
 import test from 'ava'
 
 import { gitWebhookCi } from '../src/main'
-
+import request from 'supertest'
 import { SECRET_KEY } from './fixtures/secret'
 import { getFakeCallback } from './fixtures/fake-callback'
 
@@ -14,7 +14,7 @@ test.cb(`Should able to use a gitee config to connect`, t => {
   gitWebhookCi({
     secret: SECRET_KEY,
     cmd: () => {
-      
+
     }
   })
 
