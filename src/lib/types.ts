@@ -12,4 +12,4 @@ type configOptionType = {
   inited?: boolean
 }
 
-export default configOptionType
+export { configOptionType }

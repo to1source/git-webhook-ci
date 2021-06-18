@@ -2,7 +2,7 @@
 
 // typescript is really a fucking joke
 
-import configOptionType from './config-option-type'
+import { configOptionType } from './types'
 import EventEmitter from 'events'
 
 class BaseTools extends EventEmitter {
@@ -19,6 +19,9 @@ class BaseTools extends EventEmitter {
    */
   protected parsePayload(req: any): Promise<any> {
       return new Promise((resolver: any, rejecter: any): void => {
+        // V.2 here we also need to parse the header and add to the json
+        // and the result object will become { payload: Object, header: Object }
+
         let body: Array<any> = []
         req
           .on('data', (chunk: any) => {
