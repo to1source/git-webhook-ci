@@ -1,6 +1,7 @@
 // src/provider/gitee/gitee-class.ts
 
 import { BaseTools, configOptionType } from '../../lib/base-tools'
+import { verifyHandler } from './verify'
 
 export class GiteeHandler extends BaseTools {
 
@@ -20,8 +21,8 @@ export class GiteeHandler extends BaseTools {
       return callback() // This is the only time we use the callback
     }
     this.parsePayload(req)
-      .then(payload => {
-        this.verify(payload)
+      .then(obj => {
+        this.verify(obj)
           .then(result => {
             this.resSuccess(res, req, result)
           })
@@ -36,13 +37,13 @@ export class GiteeHandler extends BaseTools {
    * @param {object} payload Content
    * @return {object} promise
    */
-  private verify(payload: any): Promise<any> {
+  private verify(obj: any): Promise<any> {
     return new Promise((resolver: any, rejecter: any): void => {
-      // Log('parsed payload', payload);
-      if (payload.password === this.options.secret) {
+      const { header, payload } = obj
+      if (verifyHandler(header, this.options.secret)) {
         resolver(payload)
       } else {
-        rejecter(new Error('Verify failed'))
+        rejecter(new Error('Gitee verify failed'))
       }
     })
   }
@@ -56,7 +57,7 @@ export class GiteeHandler extends BaseTools {
     res.writeHead(200, { 'content-type': 'application/json' })
     res.end('{"ok":true}')
     // Check the result if this is what we wanted
-    if (result.hook_name === 'push_hooks') {
+    if (result.hook_name === 'push_hooks') { // @TODO check if this is still correct
       this.emit('push', {
         payload: result,
         host: req.headers.host,

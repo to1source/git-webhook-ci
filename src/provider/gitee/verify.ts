@@ -1,14 +1,16 @@
 // src/provider/gitee/secret.ts
 // see here: https://gitee.com/help/articles/4290#article-header3
-
+import { debugFn } from '../../lib/helpers'
 import { createHmac } from 'crypto'
+// use the debug to find out what went wrong
+const debug = debugFn('git-webhook-ci:gitee:verify')
 
 /**
  * create the secret key to compare
  * @param {string} secretKey the secret key set during sestting up the webhook
  * @param {number} timestamp this timestamp send from the git provider server
  */
-export function verifyKeyFn(secretKey: string, timestamp: number): string {
+function verifyKeyFn(secretKey: string, timestamp: number): string {
   const secret_enc = Buffer.from(secret, 'utf8')
   const string_to_sign = `${timestamp}\n${secret_enc}`
   const hmac = createHmac('sha256', secret_enc)
@@ -19,9 +21,24 @@ export function verifyKeyFn(secretKey: string, timestamp: number): string {
 
 /**
  * gitee has it's own payload structure therefore we need to check if we have those things in the header
- * @param {*} req request object from http server
- * @return {*} 
+ * @param {*} header the parsed header from req
+ * @param {string} secretKey the secret key provided when setup the webhook
+ * @return {boolean}
  */
-export function verifyHeader(req: any): any {
+export function verifyHandler(header: any, secretKey: string): boolean {
+  if (header['User-Agent'] === 'git-oschina-hook') {
+    debug('User-Agent passed', header['User-Agent'])
+    const expected = ['X-Gitee-Token', 'X-Gitee-Timestamp', 'X-Gitee-Event'].filter(key => header[key] !== undefined).length
+    if (expected === 3) {
+      debug('Expected header passed')
+      if (header['X-Gitee-Token'] === verifyKeyFn(secretKey, parseInt(header['X-Gitee-Timestamp'])) {
 
+        return true
+      } else {
+        debug('verify the x-gitee-token failed')
+      }
+    }
+  }
+
+  return false
 }
