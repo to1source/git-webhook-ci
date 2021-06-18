@@ -1,6 +1,6 @@
-# This is update version of the Gitee python code (from 2.x upgrade to 3.x)
+# Update version of the Gitee python code (from 2.x upgrade to 3.x)
 
-```python
+```py
 import time
 import hmac
 import hashlib
