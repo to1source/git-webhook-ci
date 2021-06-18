@@ -9,8 +9,8 @@ const debug = debugFn('git-webhook-ci:gitee')
 
 /**
  * The main method to handle the server create and run the whole service for gitee
- * @param {configOptionType} config
- * @param {object} opt
+ * @param {configOptionType} config for the overall setup of the system
+ * @param {object} opt this provide the environment variables to the cmd to execute later
  * @param {function} callback
  * @param {function} errorHandler optional
  * @return {http server instance}
@@ -37,6 +37,9 @@ function createGiteeServer(config: configOptionType, opt: any, callback: any, er
   // return the server instance
   return createServer(
     (req: any, res: any) => {
+
+      debug(`server callback executed`)
+
       gitee.handler(req, res, (err: any) => {
         debug('The url got called! [%s]', req.url, err)
         errorHandler(req.url, err)

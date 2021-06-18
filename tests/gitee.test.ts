@@ -28,6 +28,8 @@ test.cb(`Should able to use a gitee config to listen to the webhook event`, t =>
   .post('/webhook')
   .set(header)
   .send(payload)
-
+  .expect(200, () => { // we must call here to let supertest to exeucte the call 
+    // console.log(`200 back`)
+  })
 
 })

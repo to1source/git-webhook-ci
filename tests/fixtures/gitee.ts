@@ -17,7 +17,7 @@ export const payload = {
   "hook_url": "http://gitee.com/liwen/gitos/hooks/1/edit",
   "timestamp": "1576754827988",
   "sign": "rLEHLuZRIQHuTPeXMib9Czoq9dVXO4TsQcmQQHtjXHA=",
-  "ref": "refs/heads/change_commitlint_config",
+  "ref": "refs/heads/master",
   "before": "0000000000000000000000000000000000000000",
   "after": "1cdcd819599cbb4099289dbbec762452f006cb40",
   "created": true,

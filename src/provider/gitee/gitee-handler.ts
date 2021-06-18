@@ -2,6 +2,9 @@
 
 import { BaseTools, configOptionType } from '../../lib/base-tools'
 import { verifyHandler } from './verify'
+import { debugFn } from '../../lib/helpers'
+
+const debug = debugFn('git-webhook-ci:gitee:handler')
 
 export class GiteeHandler extends BaseTools {
 
@@ -17,7 +20,10 @@ export class GiteeHandler extends BaseTools {
    * @return {null} nothing
    */
   public handler(req: any, res: any, callback: any): any {
+    debug(`got call here`)
     if (req.method !== 'POST' || req.url.split('?').shift() !== this.options.path) {
+      debug(req.url)
+      debug(this.options.path)
       return callback() // This is the only time we use the callback
     }
     this.parsePayload(req)
