@@ -1,14 +1,10 @@
-#!/usr/bin/env node
-/**
- * Run from cli
- * dir: '',
- * path: '/webhook',
- * port: 8081,
- * branch: 'refs/heads/master',
- * cmd: 'git pull origin master --no-edit'
- */
-// import { configOptionType } from './lib'
-import { gitWebhookCi } from './main'
+# Write your own CLI
+
+Here we show you the original CLI code in the V.1 (update to using Typescript)
+
+
+```js
+import gitWebhookCi from 'git-webhook-ci'
 import meow from 'meow'
 
 const helpText: string = `
@@ -81,3 +77,6 @@ const serve = function(p: string, flags: any): any {
 }
 // Run it
 serve(cli.input[0], cli.flags)
+
+
+```

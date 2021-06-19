@@ -1,6 +1,9 @@
 // src/lib/option.ts
 // base config option
 
+// @NOTE here is a problem github use /payload as default now 
+
+
 // basically all the required options
 export const defaultOptions: any = {
   port: 8081,
