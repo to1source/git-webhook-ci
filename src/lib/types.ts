@@ -3,13 +3,15 @@
 
 type configOptionType = {
   port: number,
-  dir?: string,
   secret: string,
   provider: string,
   path: string,
   branch: string,
   cmd: string,
-  inited?: boolean
+  // @TODO should we put the cwd and env here as well?
+  error?: any,
+  inited?: boolean,
+  dir?: string
 }
 
 type resolvedPayloadType = {

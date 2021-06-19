@@ -46,7 +46,9 @@ class BaseTools extends EventEmitter {
           .on('end', () => {
             // should catch error here as well
             try {
+
               const json: string = Buffer.concat(body).toString()
+
               resolver({
                 header,
                 payload: JSON.parse(json)
@@ -72,6 +74,11 @@ class BaseTools extends EventEmitter {
       })
     )
     this.emit('error', new Error(err))
+  }
+
+  // simple clean up method to get the url path
+  getUrlPath(req: any): string {
+    return req.url.split('?').shift()
   }
 }
 

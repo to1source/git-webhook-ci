@@ -1,7 +1,7 @@
 // src/lib/option.ts
 // base config option
 
-// @NOTE here is a problem github use /payload as default now 
+// @NOTE here is a problem github use /payload as default now
 
 
 // basically all the required options
@@ -10,5 +10,6 @@ export const defaultOptions: any = {
   provider: 'gitee',
   path: '/webhook',
   branch: 'refs/heads/master',
-  cmd: 'git pull origin master --no-edit'
+  cmd: 'git pull origin master --no-edit',
+  error: () => {} // just a placeholder 
 }
