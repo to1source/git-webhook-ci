@@ -17,8 +17,7 @@
     "init": "tsc --init",
     "build": "tsc -p tsconfig.json",
     "clean": "node ./clean.js",
-    "ts-node": "ts-node",
-    ""
+    "ts-node": ""
   },
   "keywords": [
     "git",

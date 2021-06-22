@@ -21,20 +21,12 @@ export class GiteeHandler extends BaseTools {
    */
   public handler(req: any, res: any, callback: any): any {
     debug(`got call here`)
-    if (req.method !== 'POST' || this.getUrlPath(req) !== this.options.path) {
-      debug(req.url)
-      debug(this.options.path)
-      return callback() // This is the only time we use the callback
-    }
-    this.parsePayload(req)
-      .then(obj => {
-        this.verify(obj)
-          .then(result => {
-            this.resSuccess(res, req, result)
-          })
-          .catch((err: any) => {
-            this.resError(res, err)
-          })
+    return super.handler(req, res, this.verify)
+      .then(result => {
+        this.resSuccess(req, res, result)
+      })
+      .catch(err => {
+        return callback(err)
       })
   }
 
@@ -55,11 +47,12 @@ export class GiteeHandler extends BaseTools {
   }
 
   /**
+   * @param {object} req the request 
    * @param {object} res the respond
    * @param {object} result the payload
    * @return {null} nothing
    */
-  private resSuccess(res: any, req: any, result: any) {
+  private resSuccess(req: any, res: any, result: any) {
     res.writeHead(200, { 'content-type': 'application/json' })
     res.end('{"ok":true}')
     // Check the result if this is what we wanted

@@ -2,7 +2,9 @@
 
 import EventEmitter from 'events'
 import { configOptionType, resolvedPayloadType } from './types'
+import { debugFn } from './helpers'
 
+const debug = debugFn('git-webhook-ci:base-tools')
 
 class BaseTools extends EventEmitter {
 
@@ -77,9 +79,30 @@ class BaseTools extends EventEmitter {
   }
 
   // simple clean up method to get the url path
-  getUrlPath(req: any): string {
+  protected getUrlPath(req: any): string {
     return req.url.split('?').shift()
   }
+
+  // put the validate method here 
+  protected validate(req: any): boolean {
+    return req.method !== 'POST' || this.getUrlPath(req) !== this.options.path
+  }
+  
+  // this will be overwritten by the child 
+  protected handler(req: any, res: any, verifyFn: any): Promise<any> {
+    if (!this.validate(req)) {
+      debug(req.url, this.options.path)
+      return Promise.reject(new Error(`Path validate failed`))
+    }
+    return this.parsePayload(req)
+      .then(obj => {
+        return verifyFn(obj)
+          .catch((err: any) => {
+            this.resError(res, err)
+          })
+      })
+  }
+
 }
 
 export { BaseTools, configOptionType }
