@@ -35,10 +35,10 @@ export class GiteeHandler extends BaseTools {
    * @param {object} payload Content
    * @return {object} promise
    */
-  private verify(obj: any): Promise<any> {
+  private verify(obj: any, opt: any): Promise<any> {
     return new Promise((resolver: any, rejecter: any): void => {
       const { header, payload } = obj
-      if (verifyHandler(header, this.options.secret)) {
+      if (verifyHandler(header, opt.secret)) {
         resolver(payload)
       } else {
         rejecter(new Error('Gitee verify failed'))

@@ -35,6 +35,7 @@ class BaseTools extends EventEmitter {
    * @return {object} Promise
    */
   protected parsePayload(req: any): Promise<resolvedPayloadType> {
+      debug('call parsePayload')
       return new Promise((resolver: any, rejecter: any): void => {
         // V.2 here we also need to parse the header and add to the json
         // and the result object will become { payload: Object, header: Object }
@@ -85,18 +86,20 @@ class BaseTools extends EventEmitter {
 
   // put the validate method here 
   protected validate(req: any): boolean {
-    return req.method !== 'POST' || this.getUrlPath(req) !== this.options.path
+    return req.method === 'POST' && this.getUrlPath(req) === this.options.path
   }
-  
+
   // this will be overwritten by the child 
   protected handler(req: any, res: any, verifyFn: any): Promise<any> {
     if (!this.validate(req)) {
       debug(req.url, this.options.path)
       return Promise.reject(new Error(`Path validate failed`))
     }
+
     return this.parsePayload(req)
       .then(obj => {
-        return verifyFn(obj)
+
+        return verifyFn(obj, this.options) // we move the this.options as param to get round the scope problem
           .catch((err: any) => {
             this.resError(res, err)
           })
