@@ -24,10 +24,11 @@ export class GiteeHandler extends BaseTools {
       })
   }
 
-  private verify(obj: any): Promise<any> {
+  // github token verify method 
+  private verify(obj: any, opt: any): Promise<any> {
     return new Promise((resolver: any, rejecter: any): void => {
       const { header, payload } = obj 
-      if (verifyHandler(header, this.options.secret, payload)) {
+      if (verifyHandler(header, opt.secret, payload)) {
         resolver(payload)
       } else {
         rejecter(new Error('Github verify failed'))
