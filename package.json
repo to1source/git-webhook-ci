@@ -3,6 +3,12 @@
   "version": "2.0.0-alpha.1",
   "description": "Using git provider webhook to create a poorman CI system ",
   "main": "dist/index.js",
+  "files": [
+    "docs",
+    "src",
+    "clean.js",
+    "run.js"
+  ],
   "scripts": {
     "test": "ava",
     "test:p": "ava --verbose ./tests/partial.test.ts",
