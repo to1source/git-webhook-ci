@@ -58,6 +58,7 @@ export function gitWebhookCi(options: any): any {
   // Return without Promise, because there is no need to
   return createHandler(
     config,
-    typeof config.cmd === 'function' ? config.cmd : createCallback(config.cmd.split(' '))
+    typeof config.cmd === 'function' ? config.cmd : createCallback(config.cmd.split(' ')),
+    config.error // this is the error Handler 
   )
 }
