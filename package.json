@@ -3,14 +3,22 @@
   "version": "2.0.0-alpha.1",
   "description": "Using git provider webhook to create a poorman CI system ",
   "main": "dist/index.js",
+  "files": [
+    "docs",
+    "src",
+    "clean.js",
+    "run.js"
+  ],
   "scripts": {
     "test": "ava",
+    "test:p": "ava --verbose ./tests/partial.test.ts",
+    "test:gitee": "DEBUG=git-webhook-ci:* ava --verbose ./tests/gitee.test.ts",
+    "test:run": "npm run ts -- run.ts",
     "lint": "eslint src/ --ext .js,.jsx,.ts,.tsx",
     "init": "tsc --init",
     "build": "tsc -p tsconfig.json",
     "clean": "node ./clean.js",
-    "ts-node": "ts-node",
-    "docs": "typedoc --entryPoints src/index.ts"
+    "ts": "node -r esbuild-register"
   },
   "keywords": [
     "git",
@@ -40,8 +48,7 @@
     "esbuild": "^0.12.0",
     "esbuild-register": "^2.5.0",
     "eslint": "^7.26.0",
-    "ts-node": "^9.1.1",
-    "typedoc": "^0.20.36",
+    "supertest": "^6.1.3",
     "typescript": "^4.2.4"
   },
   "ava": {

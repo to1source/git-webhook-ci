@@ -8,7 +8,7 @@ import githubWebhook from 'github-webhook-handler'
 const debug = debugFn('git-webhook-ci:github')
 
 // main method
-function createGithubServer(config: configOptionType, opt: any, callback: any, errorHandler: any = () => {}): any {
+function createGithubServer(config: configOptionType, callback: any, errorHandler: any = () => {}): any {
   const handler = githubWebhook({
     path: config.path,
     secret: config.secret
@@ -22,7 +22,7 @@ function createGithubServer(config: configOptionType, opt: any, callback: any, e
   handler.on('push', result => {
     const ref = result.payload.ref
     if (config.branch === '*' || config.branch === ref) {
-      callback(result, opt, ref)
+      callback(result, config, ref)
     } else {
       const errorStr = `Received a push event for ${result.payload.repository.name} to ${ref}`
       debug(errorStr)
@@ -31,7 +31,6 @@ function createGithubServer(config: configOptionType, opt: any, callback: any, e
   })
 
   return createServer(
-    config,
     (req: any, res: any): void => {
       handler(req, res, (err: any): void => {
 
@@ -42,6 +41,7 @@ function createGithubServer(config: configOptionType, opt: any, callback: any, e
         res.end('-- no such location --')
       })
     },
+    config,
     debug
   )
 }

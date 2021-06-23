@@ -3,19 +3,22 @@
 import { spawn } from 'child_process'
 
 import { getProvider } from './provider'
-import defaultOptions from './lib/option'
+import { defaultOptions } from './lib/option'
 import { debugFn } from './lib'
 
 const debug = debugFn('git-webhook-ci:main')
 
-
 /**
  * create a callback to execute
+ * @param {object} opt --> need this to pass the env and pwd to spawn
  * @param {string} cmd
  */
 function createCallback(cmd: Array<any>): any {
-  return function callback(payload: any, opt: any) {
-    const ps = spawn(cmd[0], cmd.filter((c: any, i: number): boolean => i > 0), opt)
+  // the signature just matching the cmd callback and create a problem here
+  return function callback(_: any, opt: any) {
+
+    const ps = spawn(cmd[0], cmd.filter((_: any, i: number): boolean => i > 0), opt)
+
     ps.stdout.on('data', data => {
       debug("cmd stdout:", data)
     })
@@ -40,6 +43,7 @@ export function gitWebhookCi(options: any): any {
   }
 
   const config = Object.assign({}, defaultOptions, options)
+  
   if (!config.secret || config.secret === '') {
     throw new Error('You must provide the secret!')
   }
@@ -54,10 +58,7 @@ export function gitWebhookCi(options: any): any {
   // Return without Promise, because there is no need to
   return createHandler(
     config,
-    {
-      env: Object.assign({}, process.env),
-      cwd: config.dir ? config.dir : process.cwd()
-    },
-    typeof config.cmd === 'function' ? config.cmd : createCallback(config.cmd.split(' '))
+    typeof config.cmd === 'function' ? config.cmd : createCallback(config.cmd.split(' ')),
+    config.error // this is the error Handler 
   )
 }

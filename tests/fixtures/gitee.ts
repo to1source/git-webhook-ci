@@ -2,7 +2,7 @@
 
 // the Gitee webhook headers and payload
 
-export const headers = {
+export const header = {
   'Content-Type': 'application/json',   // # 默认为 application/json , 若是旧版钩子(已不维护)为 application/x-www-form-urlencoded
   'User-Agent': 'git-oschina-hook', 　　// # 固定为 git-oschina-hook，可用于标识为来自 gitee 的请
   'X-Gitee-Token': 'webhook password/sign',　// # 用户新建 WebHook 时提供的密码或根据提供的签名密钥计算后的签名
@@ -17,7 +17,7 @@ export const payload = {
   "hook_url": "http://gitee.com/liwen/gitos/hooks/1/edit",
   "timestamp": "1576754827988",
   "sign": "rLEHLuZRIQHuTPeXMib9Czoq9dVXO4TsQcmQQHtjXHA=",
-  "ref": "refs/heads/change_commitlint_config",
+  "ref": "refs/heads/master",
   "before": "0000000000000000000000000000000000000000",
   "after": "1cdcd819599cbb4099289dbbec762452f006cb40",
   "created": true,
