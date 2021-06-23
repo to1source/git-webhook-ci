@@ -10,12 +10,11 @@ const debug = debugFn('git-webhook-ci:gitee')
 /**
  * The main method to handle the server create and run the whole service for gitee
  * @param {configOptionType} config for the overall setup of the system
- * @param {object} opt this provide the environment variables to the cmd to execute later
  * @param {function} callback
  * @param {function} errorHandler optional
  * @return {http server instance}
  */
-function createGiteeServer(config: configOptionType, opt: any, callback: any, errorHandler: any = () => {}): any {
+function createGiteeServer(config: configOptionType, callback: any, errorHandler: any = () => {}): any {
 
   const gitee: GiteeHandler = new GiteeHandler(config)
   // just debug it out
@@ -27,7 +26,7 @@ function createGiteeServer(config: configOptionType, opt: any, callback: any, er
   gitee.on('push', (result: any) => {
     const ref = result.payload.ref // ref is the branch name
     if (config.branch === '*' || config.branch === ref) {
-      callback(result, opt, ref)
+      callback(result, config, ref)
     } else {
       errorHandler(ref)
       debug('Gitee webhook is not expecting this branch', ref)

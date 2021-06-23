@@ -10,6 +10,7 @@ const debug = debugFn('git-webhook-ci:main')
 
 /**
  * create a callback to execute
+ * @param {object} opt --> need this to pass the env and pwd to spawn
  * @param {string} cmd
  */
 function createCallback(cmd: Array<any>): any {
@@ -42,6 +43,7 @@ export function gitWebhookCi(options: any): any {
   }
 
   const config = Object.assign({}, defaultOptions, options)
+  
   if (!config.secret || config.secret === '') {
     throw new Error('You must provide the secret!')
   }
@@ -56,10 +58,6 @@ export function gitWebhookCi(options: any): any {
   // Return without Promise, because there is no need to
   return createHandler(
     config,
-    {
-      env: Object.assign({}, process.env),
-      cwd: config.dir ? config.dir : process.cwd()
-    },
     typeof config.cmd === 'function' ? config.cmd : createCallback(config.cmd.split(' '))
   )
 }

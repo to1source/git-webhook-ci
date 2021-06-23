@@ -7,11 +7,12 @@ type configOptionType = {
   provider: string,
   path: string,
   branch: string,
-  cmd: string,
-  // @TODO should we put the cwd and env here as well?
+  cmd: string | any,
+  // @TODO
+  pwd?: string,
+  env?: any, 
   error?: any,
-  inited?: boolean,
-  dir?: string
+  inited?: boolean
 }
 
 type resolvedPayloadType = {
