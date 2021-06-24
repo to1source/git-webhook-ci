@@ -25,9 +25,7 @@ export class GiteeHandler extends BaseTools {
       .then(result => {
         this.resSuccess(req, res, result)
       })
-      .catch(err => {
-        return callback(err)
-      })
+      .catch(callback)
   }
 
   /**
