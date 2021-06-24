@@ -19,7 +19,10 @@ export function getFakeData(provider: string): any {
         payload: giteePayload
       }
     case 'gitlab':
-      
+      return {
+        header: gitlabHeader,
+        payload: gitlabPayload
+      }
 
     default:
       throw new Error(`Unknown provider ${provider}`)
