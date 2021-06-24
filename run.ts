@@ -6,6 +6,7 @@ import { gitWebhookCi } from './src/main'
 const config = {
   port: 4567,
   provider: 'github',
+  branch: '*',
   secret: process.env.SECRET, // so we only pass this when run it
   cmd: (args: []): void => {
     console.log("Got callback")
