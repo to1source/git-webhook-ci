@@ -1,6 +1,9 @@
 // src/provider/gitlab/gitlab-handler.ts
 
 import { BaseTools, configOptionType } from '../../lib/base-tools'
+import { debugFn } from '../../lib'
+
+const debug = debugFn('git-webhook-ci:gitlab')
 
 export class GitlabHandler extends BaseTools {
 
@@ -36,9 +39,10 @@ export class GitlabHandler extends BaseTools {
     const { header, payload } = obj
     // Console.log('headers', headers, typeof headers);
     return new Promise((resolver, rejecter) => {
-      if (header[eventName] === 'Push Hook' && header[token] === this.options.secret) {
+      if (header[eventName] === 'Push Hook' && header[token] === opt.secret) {
         resolver(payload)
       } else {
+        debug(header)
         rejecter(new Error('Gitlab verify failed'))
       }
     })
@@ -49,7 +53,7 @@ export class GitlabHandler extends BaseTools {
    * @param {object} result the payload
    * @return {null} nothing
    */
-  private resSuccess(res: any, req: any, payload: any): void {
+  private resSuccess(req: any, res: any, payload: any): void {
     res.writeHead(200, { 'content-type': 'application/json' })
     res.end('{"ok":true}')
     // Check the result if this is what we wanted
