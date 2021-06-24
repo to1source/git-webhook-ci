@@ -41,14 +41,15 @@ gitWebhook(config);
 
 | Property name | Description   | Default  | Type |
 | ------------- | ------------- | ---------| -----|
-| dir           | Where the git root directory is, default to where it gets call | `process.cwd()` | String |
+| cwd           | Where the git root directory is, default to where it gets call | `process.cwd()` | String |
+| env           | The node environment variable | `process.env` | Object | 
 | secret        | A secret key pass to encrypt data between github and your server | '' | String |
 | path          | The path where the web hook call to your server | `/webhook` | String |
 | port          | The port number where this callback server running on | `8081` | Integer |
 | branch        | The branch where you will trigger action when received event from github. You can pass `*` wildcard to listen to all the branches  | `refs/heads/master` | String |
 | cmd           | The command to execute when callback happens. You can also pass this as a function (see above for signature) and especially useful when you use `*` for branch  | `git pull origin master --no-edit` | String |
-| error         | expect a function and you can handle the error yourself. Or enable DEBUG=git-webhook-ci:error to see the error |
-| inited        | only available with `wechat` provider | `false` | Boolean |
+| error         | expect a function and you can handle the error yourself. Or enable DEBUG=git-webhook-ci:error to see the error | `() => {}` | Function | 
+| inited        | only available for `wechat` provider | `false` | Boolean |
 
 ### Debug option
 

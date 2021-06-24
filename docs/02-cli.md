@@ -30,7 +30,7 @@ const flags: any = {
     alias: 'pr',
     default: 'github'
   },
-  dir: {
+  pwd: {
     type: 'string',
     alias: 'd'
   },
@@ -75,6 +75,7 @@ const serve = function(p: string, flags: any): any {
 
   return gitWebhookCi(config)
 }
+
 // Run it
 serve(cli.input[0], cli.flags)
 
