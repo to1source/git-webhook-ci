@@ -6,7 +6,7 @@ import { createServer, configOptionType, debugFn } from '../../lib'
 const debug = debugFn('git-webhook-ci:gitlab')
 
 // main method
-function createGitlabServer(config: configOptionType, opt: any, callback: any, errorHandler: any = ()=>{}) {
+function createGitlabServer(config: configOptionType, callback: any, errorHandler: any = ()=>{}) {
   const gitlab: GitlabHandler = new GitlabHandler(config)
 
   gitlab.on('error', (err: any) => {
@@ -18,7 +18,8 @@ function createGitlabServer(config: configOptionType, opt: any, callback: any, e
   gitlab.on('push', (result: any) => {
     const ref = result.payload.ref
     if (config.branch === '*' || config.branch === ref) {
-      callback(result, opt, ref)
+      debug(`Gitlab Call success`)
+      callback(result, config, ref)
     } else {
       errorHandler(ref)
       debug('Gitee webhook is not expecting this branch', ref)

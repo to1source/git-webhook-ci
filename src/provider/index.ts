@@ -22,7 +22,8 @@ export function getProvider(provider: string): any {
     case 'github':
       return githubWebhook
     case 'gitee':
-    default:
       return giteeWebhook
+    default:
+      throw new Error(`Unknown provider`)
   }
 }

@@ -1,6 +1,9 @@
 // src/provider/gitlab/gitlab-handler.ts
 
 import { BaseTools, configOptionType } from '../../lib/base-tools'
+import { debugFn } from '../../lib'
+
+const debug = debugFn('git-webhook-ci:gitlab')
 
 export class GitlabHandler extends BaseTools {
 
@@ -17,20 +20,11 @@ export class GitlabHandler extends BaseTools {
    * @return {null} nothing
    */
   public handler(req: any, res: any, callback: any): any {
-    if (req.url.split('?').shift() !== this.options.path || req.method !== 'POST') {
-      return callback() // The only time we use the callback
-    }
-    this.parsePayload(req).then(payload => {
-      const headers = req.headers // JSON.stringify(req.headers, replacer);
-      // cache = null;
-      this.verify(payload, headers)
-        .then(payload => {
-          this.resSuccess(res, req, payload)
-        })
-        .catch((err: any) => {
-          this.resError(res, err)
-        })
-    })
+    return super.handler(req, res, this.verify)
+      .then(result => {
+        this.resSuccess(req, res, result)
+      })
+      .catch(callback)
   }
 
   /**
@@ -39,15 +33,17 @@ export class GitlabHandler extends BaseTools {
    * @param {object} headers headers looking for the X-Gitlab-Event: Push Hook
    * @return {object} promise
    */
-  private verify(payload: any, headers: any): Promise<any> {
-    const eventName = 'X-Gitlab-Event'.toLowerCase()
-    const token = 'X-Gitlab-Token'.toLowerCase()
+  private verify(obj: any, opt: any): Promise<any> {
+    const eventName = 'X-Gitlab-Event'
+    const token = 'X-Gitlab-Token'
+    const { header, payload } = obj
     // Console.log('headers', headers, typeof headers);
     return new Promise((resolver, rejecter) => {
-      if (headers[eventName] === 'Push Hook' && headers[token] === this.options.secret) {
+      if (header[eventName] === 'Push Hook' && header[token] === opt.secret) {
         resolver(payload)
       } else {
-        rejecter(new Error('Verify failed'))
+        debug(header)
+        rejecter(new Error('Gitlab verify failed'))
       }
     })
   }
@@ -57,7 +53,7 @@ export class GitlabHandler extends BaseTools {
    * @param {object} result the payload
    * @return {null} nothing
    */
-  private resSuccess(res: any, req: any, payload: any): void {
+  private resSuccess(req: any, res: any, payload: any): void {
     res.writeHead(200, { 'content-type': 'application/json' })
     res.end('{"ok":true}')
     // Check the result if this is what we wanted
