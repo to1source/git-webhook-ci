@@ -21,7 +21,7 @@ or
 Create a js file (normally on your project root directory). Let's call it `webhook.js`.
 
 ```js
-const gitWebhook = require('git-webhook-ci');
+const gitWebhook = require('git-webhook-ci')
 const config = {
   "provider": "github", // from version 2 you MUST provide this
   "secret": "your-github-webhook-secret",
@@ -34,7 +34,7 @@ const config = {
   }
 }
 
-gitWebhook(config);
+gitWebhook(config)
 ```
 
 ### Full configuration properties

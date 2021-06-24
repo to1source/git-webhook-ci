@@ -15,6 +15,7 @@ test.cb(`Should able to use a gitee config to listen to the webhook event`, t =>
 
   request(
     gitWebhookCi({
+      provider: 'gitee',
       secret: SECRET_KEY,
       cmd: (...args) => {
 
