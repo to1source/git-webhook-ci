@@ -83,4 +83,4 @@ We drop the cli support since V.2 due to the large amount of configuration optio
 
 ## License
 
-WTFPL - Joel Chu (c) 2021
+WTFPL - TO1SOURCE / Joel Chu (c) 2021
